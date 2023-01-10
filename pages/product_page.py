@@ -34,6 +34,14 @@ class ProductPage(BasePage):
         assert self.is_element_present(*ProductPageLocators.MESSAGE_ADDING), \
             "Message about adding the product is not presented"
 
+    def message_adding_product_is_not_presented(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE_ADDING), \
+            "Message about adding the product is presented, but should not be"
+
+    def message_adding_product_has_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE_ADDING), \
+            "Message about adding the product is presented, but should has disappeared"
+
     def message_your_basket_total_is_presented(self):
         assert self.is_element_present(*ProductPageLocators.MESSAGE_YOUR_BASKET), \
             "Message about your basket total is not presented"
