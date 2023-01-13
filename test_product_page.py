@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from .pages.basket_page import BasketPage
@@ -69,3 +71,28 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page.opened_page_is_basket()
     basket_page.basket_has_not_products()
     basket_page.message_is_present_in_empty_basket()
+
+
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        login_page_link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
+        email = str(time.time()) + "@fakemail.com"
+        password = '1234Qwert'
+        login_page = LoginPage(browser, login_page_link)
+        login_page.open()
+        login_page.successful_register_new_user(email, password)
+        login_page.user_authorization_completed()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, product_base_link)
+        page.open()
+        page.add_to_basket()
+        page.solve_quiz_and_get_code()
+        page.message_contains_correct_product_name()
+        page.message_contains_correct_total_cost()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, product_base_link)
+        page.open()
+        page.message_adding_product_is_not_presented()
